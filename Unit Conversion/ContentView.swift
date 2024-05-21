@@ -25,6 +25,8 @@ struct ContentView: View {
     @State private var selectedVolumeInput = "liters"
     @State private var selectedVolumeOutput = "liters"
     
+    @FocusState private var amountIsFocused: Bool
+    
     var lengthUnits = ["meters", "km", "feet", "yards", "miles"]
     var temperatureUnits = ["Celcius", "Fahrenheit", "Kelvin"]
     var timeUnits = ["seconds", "minutes", "hours", "days"]
@@ -174,6 +176,7 @@ struct ContentView: View {
             Form {
                 Section  {
                     TextField("Enter the Length Value", value: $lengthInput, format: .number ) .keyboardType(.decimalPad)
+                        .focused($amountIsFocused)
                     Picker("Choose length Unit", selection: $selectedLengthInput) {
                         ForEach(lengthUnits, id: \.self) {
                             unit in Text(unit)
@@ -194,6 +197,7 @@ struct ContentView: View {
                 Section {
                     TextField("Enter the Temperature Value", value: $temperatureInput, format: .number)
                         .keyboardType(.decimalPad)
+                        .focused($amountIsFocused)
                     Picker("Choose Temperature Unit", selection: $selectedTemperatureInput) {
                         ForEach(temperatureUnits, id: \.self) {
                             unit in Text(unit)
@@ -213,6 +217,7 @@ struct ContentView: View {
                 Section {
                     TextField("Enter the Time Value", value: $timeInput, format: .number)
                         .keyboardType(.decimalPad)
+                        .focused($amountIsFocused)
                     Picker("Choose the Entered Time Unit", selection: $selectedTimeInput) {
                         ForEach(timeUnits, id: \.self) {
                             unit in Text(unit)
@@ -234,6 +239,7 @@ struct ContentView: View {
                 Section("Volume") {
                     TextField("Enter the Volume Value", value: $volumeInput, format: .number)
                         .keyboardType(.decimalPad)
+                        .focused($amountIsFocused)
                     Picker("Choose the Entered Volume Unit", selection: $selectedVolumeInput) {
                         ForEach(volumeUnits, id: \.self) {
                             unit in Text(unit)
@@ -250,6 +256,13 @@ struct ContentView: View {
             }
             .navigationTitle("Unit Conversion")
             .navigationBarTitleDisplayMode(.automatic)
+            .toolbar {
+                if amountIsFocused {
+                    Button("Done"){
+                        amountIsFocused = false
+                    }
+                }
+            }
         }
     }
 }
